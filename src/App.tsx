@@ -1,11 +1,17 @@
-import React from 'react';
-import './App.css';
-import TextEditor from './TextEditor';
+import React from 'react'
+import './App.css'
+import TextEditor from './TextEditor'
+import Preview from './Preview'
+import { useState} from 'react'
 
 const App: React.FC = () => {
+  const [currentText, setCurrentText] = useState<string>('')
   return (
-   <TextEditor />
-  );
+    <div>
+      <TextEditor setCurrentText={setCurrentText} />
+      <Preview currentText={currentText} />
+    </div>
+  )
 }
 
-export default App;
+export default App
