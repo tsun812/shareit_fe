@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import TextEditor from './TextEditor'
+import TextEditor from './Editor/TextEditor'
 import Preview from './Preview'
 import { useState} from 'react'
 
