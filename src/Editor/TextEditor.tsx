@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRef, useState, useMemo } from 'react'
 import 'quill/dist/quill.snow.css'
-//import './TextEditor.css'
+import './TextEditor.css'
 import ReactQuill, { Quill } from 'react-quill'
 
 interface Props {

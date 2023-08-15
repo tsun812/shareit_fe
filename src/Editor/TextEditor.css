@@ -1,0 +1,56 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+.ql-editor {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 1rem;
+    font-size: 22px;
+    background-color:rgb(252, 252, 252);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+}
+.ql-container {
+    border: none
+}
+
+.ql-toolbar {
+    width: 8.5in;
+    margin: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    color: white !important;
+    background-color: rgb(63, 175, 173);
+    min-height: 4rem;
+}
+.ql-toolbar .ql-stroke {
+    fill: none !important;
+    stroke: #fff !important;
+}
+
+.ql-toolbar .ql-fill {
+    fill: #fff !important;
+    stroke: none !important;
+}
+
+.ql-toolbar .ql-picker{
+    color: #fff !important;
+    background-color:rgb(63, 175, 173) !important;
+}
+
+.ql-picker-item {
+    color: #fff;
+    background-color:rgb(63, 175, 173);
+}
+
+/* .qls-snow .ql-picker-options{
+    padding: 0
+} */
+
+/* .pre {
+     white-space: pre-wrap !important;
+} */

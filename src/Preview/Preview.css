@@ -1,0 +1,9 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+.previewContainer {
+    margin: 5rem;
+    padding: 12px;
+    font-size: 22px;
+}
