@@ -7,7 +7,10 @@ interface Props {
 const Preview: React.FC<Props> = ({currentText}) => {
   
   return (
+    <div>
+    <div className='previewHeader'>Preview</div>
     <ReactMarkdown className='previewContainer'>{currentText}</ReactMarkdown>
+    </div>
   )
 }
 

@@ -4,14 +4,16 @@
 
 .ql-editor {
     width: 8.5in;
-    min-height: 11in;
+    height: 11in;
     margin: 1rem;
     font-size: 22px;
+    padding: 30px 15px;
     background-color:rgb(252, 252, 252);
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
 }
+
 .ql-container {
-    border: none
+    border: none !important;
 }
 
 .ql-toolbar {
@@ -25,7 +27,7 @@
     z-index: 1;
     color: white !important;
     background-color: rgb(63, 175, 173);
-    min-height: 4rem;
+    height: 4rem;
 }
 .ql-toolbar .ql-stroke {
     fill: none !important;

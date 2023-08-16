@@ -3,7 +3,29 @@
 }
 
 .previewContainer {
-    margin: 5rem;
-    padding: 12px;
+    width: 8.5in;
+    height: 11in;
+    margin: 1rem;
+    padding: 12px 15px;
+    overflow-y: auto;
     font-size: 22px;
+    line-height: 1.42;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+    
+}
+
+.previewHeader {
+    width: 8.5in;
+    margin: 1rem;
+    height: 4rem;
+    border: 1px solid #ccc;
+    background-color: rgb(63, 175, 173);
+    color: rgb(255, 255, 255);
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
