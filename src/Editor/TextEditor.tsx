@@ -1,29 +1,63 @@
 import React from 'react'
-import { useRef, useState, useMemo } from 'react'
+import { useRef, useState, useMemo, useEffect } from 'react'
 import 'quill/dist/quill.snow.css'
 import './TextEditor.css'
 import ReactQuill, { Quill } from 'react-quill'
+import { io, Socket } from 'socket.io-client'
 
 interface Props {
   setCurrentText: React.Dispatch<React.SetStateAction<string>>
 }
 
+interface ServerToClientEvents {
+  'receive-changes': (delta: any) => void;
+}
+
+interface ClientToServerEvents {
+  'send-changes': (delta: any) => void;
+}
+
 const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   const [value, setValue] = useState<string>('')
-  
+  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
+
   // preserve white space, remove auto indentation
    const container = useRef<ReactQuill>(null)
   let Block = Quill.import('blots/block');
   Block.tagName = 'DIV';
   Block.className = 'pre';
   Quill.register(Block, true);
-  
+  useEffect(() => {
+    const s: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://localhost:3001')
+    setSocket(s)
+
+    return(() => {
+      s.disconnect() 
+    })
+  }, [])
+
+  useEffect(() => {
+    if(socket == null) return
+    const updateHandler = (delta: any) => {
+      const currentEditor = container.current?.getEditor()
+      currentEditor?.updateContents(delta)
+    }
+
+    socket.on('receive-changes', updateHandler)
+
+    return(() => {
+      socket.off('receive-changes', updateHandler) 
+    })
+  }, [socket])
+
   const handleValueChange = (
     value: string,
     delta: any,
     source: any,
     editor: ReactQuill.UnprivilegedEditor
   ) => {
+    if(source !== 'user' || socket == null) return
+    socket.emit('send-changes', delta)
     setCurrentText(editor.getText())
     setValue(value)
   }
