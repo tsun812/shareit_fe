@@ -10,34 +10,33 @@ interface Props {
 }
 
 interface ServerToClientEvents {
-  'receive-changes': (delta: any) => void;
+  'receive-changes': (delta: any) => void
 }
 
 interface ClientToServerEvents {
-  'send-changes': (delta: any) => void;
+  'send-changes': (delta: any) => void
 }
 
 const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   const [value, setValue] = useState<string>('')
-  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
+  const [socket, setSocket] =
+    useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
 
-  // preserve white space, remove auto indentation
-   const container = useRef<ReactQuill>(null)
-  let Block = Quill.import('blots/block');
-  Block.tagName = 'DIV';
-  Block.className = 'pre';
-  Quill.register(Block, true);
+  const container = useRef<ReactQuill>(null)
+
   useEffect(() => {
-    const s: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://localhost:3001')
+    const s: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+      'http://localhost:3001'
+    )
     setSocket(s)
 
-    return(() => {
-      s.disconnect() 
-    })
+    return () => {
+      s.disconnect()
+    }
   }, [])
 
   useEffect(() => {
-    if(socket == null) return
+    if (socket == null) return
     const updateHandler = (delta: any) => {
       const currentEditor = container.current?.getEditor()
       currentEditor?.updateContents(delta)
@@ -45,9 +44,9 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
 
     socket.on('receive-changes', updateHandler)
 
-    return(() => {
-      socket.off('receive-changes', updateHandler) 
-    })
+    return () => {
+      socket.off('receive-changes', updateHandler)
+    }
   }, [socket])
 
   const handleValueChange = (
@@ -56,7 +55,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     source: any,
     editor: ReactQuill.UnprivilegedEditor
   ) => {
-    if(source !== 'user' || socket == null) return
+    if (source !== 'user' || socket == null) return
     socket.emit('send-changes', delta)
     setCurrentText(editor.getText())
     setValue(value)
@@ -157,7 +156,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
         } else if (input === 'bullet') {
           currentEditor?.insertText(currentIndex?.index, '1. ')
         }
-        currentEditor?.setSelection(currentIndex?.index + 1, 0)
+        currentEditor?.setSelection(currentIndex?.index + 3, 0)
       }
     },
   }
@@ -172,35 +171,36 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     return editor
   }, [])
 
+  const formats = [
+    'background',
+    'bold',
+    'color',
+    'font',
+    'code',
+    'italic',
+    'link',
+    'size',
+    'strike',
+    'script',
+    'underline',
+    'blockquote',
+    'header',
+    'indent',
+    'align',
+    'direction',
+    'code-block',
+    'formula',
+    'image',
+    'video',
+  ]
+
   return (
     <ReactQuill
       theme='snow'
       ref={container}
       defaultValue={value}
       modules={modules}
-      formats={[
-        "background",
-        "bold", 
-        "color", 
-        "font", 
-        "code", 
-        "italic", 
-        "link", 
-        "size", 
-        "strike", 
-        "script",
-        "underline", 
-        "blockquote", 
-        // "header",
-        "indent", 
-        // "list", <-- commented-out to suppress auto bullets
-        "align", 
-        "direction", 
-        "code-block", 
-        "formula", 
-        "image",
-        "video"
-    ]}
+      formats={formats}
       onChange={(
         value: string,
         delta: any,
