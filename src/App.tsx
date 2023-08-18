@@ -1,16 +1,17 @@
 import React from 'react'
 import './App.css'
-import TextEditor from './Editor/TextEditor'
-import Preview from './Preview/Preview'
-import { useState} from 'react'
-
+import DocumentPage from './DocumentPage/DocumentPage'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { v4 as uuidV4 } from 'uuid'
 const App: React.FC = () => {
-  const [currentText, setCurrentText] = useState<string>('')
+  
   return (
-    <div className='container'>
-      <TextEditor setCurrentText={setCurrentText} />
-      <Preview currentText={currentText} />
-    </div>
+    <Router>
+      <Routes>
+        <Route  path='/' element={<Navigate to={`/documents/${uuidV4()}`} replace/>} />
+        <Route  path='/documents/:id' element={<DocumentPage />} />
+      </Routes>
+    </Router>
   )
 }
 
