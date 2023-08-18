@@ -178,6 +178,29 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       ref={container}
       defaultValue={value}
       modules={modules}
+      formats={[
+        "background",
+        "bold", 
+        "color", 
+        "font", 
+        "code", 
+        "italic", 
+        "link", 
+        "size", 
+        "strike", 
+        "script",
+        "underline", 
+        "blockquote", 
+        // "header",
+        "indent", 
+        // "list", <-- commented-out to suppress auto bullets
+        "align", 
+        "direction", 
+        "code-block", 
+        "formula", 
+        "image",
+        "video"
+    ]}
       onChange={(
         value: string,
         delta: any,

@@ -49,3 +49,24 @@
     margin: 0;
     color: #ffffff   
 }
+
+blockquote {
+    margin-left: 0;
+    padding: 0 1em;
+    color: #6a737d;
+    border-left: 0.25em solid #dfe2e5;
+}
+
+pre {
+    padding-left: 1em;
+    background-color: #dfe2e5;
+}
+
+ul {
+    list-style-type: disc;
+    
+}
+
+li {
+    display: list-item;
+}
