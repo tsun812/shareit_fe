@@ -152,9 +152,9 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentEditor = container.current?.getEditor()
       let currentIndex = currentEditor?.getSelection(true)
       if (currentIndex) {
-        if (input == 'ordered') {
+        if (input === 'ordered') {
           currentEditor?.insertText(currentIndex?.index, '* ')
-        } else if (input == 'bullet') {
+        } else if (input === 'bullet') {
           currentEditor?.insertText(currentIndex?.index, '1. ')
         }
         currentEditor?.setSelection(currentIndex?.index + 1, 0)
