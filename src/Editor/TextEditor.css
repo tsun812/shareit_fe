@@ -49,10 +49,88 @@
     background-color:rgb(63, 175, 173);
 }
 
-/* .qls-snow .ql-picker-options{
-    padding: 0
-} */
+/** Set a tooltip with css pseudo-elements, when buttons are hover, active or focus  */
+.ql-formats button:hover:after,
+.ql-formats button:active:after,
+.ql-formats button:focus:after {
+    position: absolute;
+    background-color: black;
+    color: white;
+    padding: .5em;
+    border-radius: .5em;
+    transform: translate(-2em, 2em);
+    width: max-content;
+    z-index: 1;
+}
 
-/* .pre {
-     white-space: pre-wrap !important;
-} */
+/** Set tooltip content for header button **/
+.ql-picker-label:hover:after,
+.ql-bold:active:after,
+.ql-bold:focus:after {
+   content: 'header';
+   position: absolute;
+   background-color: black;
+   color: white;
+   padding: .5em;
+   border-radius: .5em;
+   transform: translate(-4em, 2em);
+   width: max-content;
+   z-index: 1;
+}
+
+/** Set tooltip content for bold button **/
+.ql-bold:hover:after,
+.ql-bold:active:after,
+.ql-bold:focus:after {
+   content: 'bold';
+}
+
+/** Set tooltip content for italic button **/
+.ql-italic:hover:after,
+.ql-italic:active:after,
+.ql-italic:focus:after {
+   content: 'italic';
+}
+
+/** Set tooltip content for strike button **/
+.ql-strike:hover:after,
+.ql-strike:active:after,
+.ql-strike:focus:after {
+   content: 'strike';
+}
+
+/** Set tooltip content for blockquote button **/
+.ql-blockquote:hover:after,
+.ql-blockquote:active:after,
+.ql-blockquote:focus:after {
+   content: 'blockquote';
+}
+
+/** Set tooltip content for codeblock button **/
+.ql-code-block:hover:after,
+.ql-code-block:active:after,
+.ql-code-block:focus:after {
+   content: 'code';
+}
+
+/** Set tooltip content for link button **/
+.ql-link:hover:after,
+.ql-link:active:after,
+.ql-link:focus:after {
+   content: 'link';
+}
+
+/** Set tooltip content for image button **/
+.ql-image:hover:after,
+.ql-image:active:after,
+.ql-image:focus:after {
+   content: 'image';
+}
+
+/** Set tooltip content for unordered/ordered list button **/
+.ql-list:hover:after,
+.ql-list:active:after,
+.ql-list:focus:after {
+   content: attr(value);
+}
+
