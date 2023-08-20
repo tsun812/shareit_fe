@@ -63,7 +63,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   const TOOLBAR_OPTIONS = [
     [{ header: [1, 2, 3, 4, 5, 6] }],
     ['bold', 'italic', 'strike'],
-    ['blockquote', 'code-block', 'link'],
+    ['blockquote', 'code-block', 'link', 'image'],
     [{ list: 'ordered' }, { list: 'bullet' }],
   ]
   // custom handlers to generate markdown syntax on click
@@ -145,6 +145,14 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       if (currentIndex) {
         currentEditor?.insertText(currentIndex?.index, '[](https://)')
         currentEditor?.setSelection(currentIndex?.index + 1, 0)
+      }
+    },
+    image: (input: boolean) => {
+      const currentEditor = container.current?.getEditor()
+      let currentIndex = currentEditor?.getSelection(true)
+      if (currentIndex) {
+        currentEditor?.insertText(currentIndex?.index, '![]()')
+        currentEditor?.setSelection(currentIndex?.index + 4, 0)
       }
     },
     list: (input: string) => {

@@ -70,3 +70,10 @@ ul {
 li {
     display: list-item;
 }
+
+img {
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #fff;
+    vertical-align: middle;
+}
