@@ -70,90 +70,151 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   const CUSTOM_HANDLERS = {
     header: (input: string) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-
-      if (currentIndex) {
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
         switch (input) {
           case '1':
-            currentEditor?.insertText(currentIndex?.index, '# ')
+            currentEditor?.insertText(startIndex, '# ')
             break
           case '2':
-            currentEditor?.insertText(currentIndex?.index, '## ')
+            currentEditor?.insertText(startIndex, '## ')
             break
           case '3':
-            currentEditor?.insertText(currentIndex?.index, '### ')
+            currentEditor?.insertText(startIndex, '### ')
             break
           case '4':
-            currentEditor?.insertText(currentIndex?.index, '#### ')
+            currentEditor?.insertText(startIndex, '#### ')
             break
           case '5':
-            currentEditor?.insertText(currentIndex?.index, '##### ')
+            currentEditor?.insertText(startIndex, '##### ')
             break
           case '6':
-            currentEditor?.insertText(currentIndex?.index, '###### ')
+            currentEditor?.insertText(startIndex, '###### ')
             break
         }
         currentEditor?.setSelection(
-          currentIndex?.index + parseInt(input) + 1,
+          startIndex + textLength + parseInt(input) + 1,
           0
         )
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     bold: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '****')
-        currentEditor?.setSelection(currentIndex?.index + 2, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '**')
+        currentEditor?.insertText(startIndex + textLength + 2, '**')
+        currentEditor?.setSelection(startIndex + textLength + 2, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     italic: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '**')
-        currentEditor?.setSelection(currentIndex?.index + 1, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '*')
+        currentEditor?.insertText(startIndex + textLength + 1, '*')
+        currentEditor?.setSelection(startIndex + textLength + 1, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     strike: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '~~~~')
-        currentEditor?.setSelection(currentIndex?.index + 2, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '~~')
+        currentEditor?.insertText(startIndex + textLength + 2, '~~')
+        currentEditor?.setSelection(startIndex + textLength + 2, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     blockquote: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '> ')
-        currentEditor?.setSelection(currentIndex?.index + 2, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '> ')
+        currentEditor?.setSelection(startIndex + textLength + 2, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     'code-block': (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '```\n\n```')
-        currentEditor?.setSelection(currentIndex?.index + 4, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '```\n')
+        currentEditor?.insertText(startIndex + textLength + 4, '\n```')
+        currentEditor?.setSelection(startIndex + textLength + 4, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     link: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '[](https://)')
-        currentEditor?.setSelection(currentIndex?.index + 1, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '[')
+        currentEditor?.insertText(startIndex + textLength + 1, '](https://)')
+        currentEditor?.setSelection(startIndex + textLength + 1, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     image: (input: boolean) => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
-        currentEditor?.insertText(currentIndex?.index, '![]()')
-        currentEditor?.setSelection(currentIndex?.index + 4, 0)
+      const currentSelection = currentEditor?.getSelection(true)
+      const startIndex = currentSelection?.index
+      const textLength = currentSelection?.length
+      if (startIndex !== undefined && textLength !== undefined) {
+        currentEditor?.insertText(startIndex, '![](')
+        currentEditor?.insertText(startIndex + textLength + 4, ')')
+        currentEditor?.setSelection(startIndex + textLength + 4, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+
     },
     list: (input: string) => {
       const currentEditor = container.current?.getEditor()
@@ -166,6 +227,11 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
         }
         currentEditor?.setSelection(currentIndex?.index + 3, 0)
       }
+
+      if(currentEditor?.getText()){
+        setCurrentText(currentEditor?.getText())
+      }
+      
     },
   }
 
