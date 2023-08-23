@@ -3,7 +3,7 @@
 }
 
 .ql-editor {
-    width: 8.5in;
+    width: 7in;
     height: 11in;
     margin: 1rem;
     font-size: 22px;
@@ -17,7 +17,7 @@
 }
 
 .ql-toolbar {
-    width: 8.5in;
+    width: 7in;
     margin: 1rem;
     display: flex;
     justify-content: flex-start;

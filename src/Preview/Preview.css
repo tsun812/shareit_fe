@@ -3,7 +3,7 @@
 }
 
 .previewContainer {
-    width: 8.5in;
+    width: 7in;
     height: 11in;
     margin: 1rem;
     padding: 12px 15px;
@@ -15,7 +15,8 @@
 }
 
 .previewHeader {
-    width: 8.5in;
+    max-width: 7in;
+    width: 100%;
     margin: 1rem;
     height: 4rem;
     border: 1px solid #ccc;
