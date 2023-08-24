@@ -1,8 +1,9 @@
 import React from 'react'
 import { useRef, useState, useMemo, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import 'quill/dist/quill.snow.css'
 import './TextEditor.css'
-import ReactQuill, { Quill } from 'react-quill'
+import ReactQuill from 'react-quill'
 import { io, Socket } from 'socket.io-client'
 
 interface Props {
@@ -10,18 +11,19 @@ interface Props {
 }
 
 interface ServerToClientEvents {
-  'receive-changes': (delta: any) => void
+  'receive-changes': (delta: any) => void,
+  'load-document': (delta: any) => void
 }
 
 interface ClientToServerEvents {
-  'send-changes': (delta: any) => void
+  'send-changes': any,
+  'get-document': any
 }
 
 const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   const [value, setValue] = useState<string>('')
-  const [socket, setSocket] =
-    useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
-
+  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
+  const {id: documentId} = useParams<string>()
   const container = useRef<ReactQuill>(null)
 
   useEffect(() => {
@@ -29,6 +31,8 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       'http://localhost:3001'
     )
     setSocket(s)
+    const currentEditor = container.current?.getEditor()
+    currentEditor?.disable()
 
     return () => {
       s.disconnect()
@@ -36,10 +40,28 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   }, [])
 
   useEffect(() => {
+    if(socket == null || documentId == null) return
+  
+    socket.once('load-document', (document: any) => {
+      console.log(document)
+      const currentEditor = container.current?.getEditor()
+      currentEditor?.updateContents(document)
+      currentEditor?.enable()
+      setCurrentText(document)
+    })
+    console.log('hello  ')
+    socket.emit('get-document', documentId)
+    
+  }, [socket, documentId, setCurrentText])
+
+  useEffect(() => {
     if (socket == null) return
     const updateHandler = (delta: any) => {
       const currentEditor = container.current?.getEditor()
-      currentEditor?.updateContents(delta)
+      if(currentEditor){
+        currentEditor.updateContents(delta)
+        setCurrentText(currentEditor.getText())
+      }
     }
 
     socket.on('receive-changes', updateHandler)
@@ -47,7 +69,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     return () => {
       socket.off('receive-changes', updateHandler)
     }
-  }, [socket])
+  }, [socket, setCurrentText])
 
   const handleValueChange = (
     value: string,
@@ -60,6 +82,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     setCurrentText(editor.getText())
     setValue(value)
   }
+
   const TOOLBAR_OPTIONS = [
     [{ header: [1, 2, 3, 4, 5, 6] }],
     ['bold', 'italic', 'strike'],
@@ -243,6 +266,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       },
     }
     return editor
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const formats = [
