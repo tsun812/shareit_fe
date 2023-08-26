@@ -1,0 +1,43 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.logo {
+  background-color: #fff;
+  fill: rgb(63, 175, 173);
+  padding: 0;
+  margin: 0;
+  width: 3em;
+  height: 3em;
+}
+
+.logo:active {
+  fill: #80f1dc;
+}
+
+.logoWrapper {
+  border: none;
+  background-color: #fff;
+  padding: 0;
+  width: 3em;
+  height: 3em;
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+.logoWrapper:hover:after {
+  position: absolute;
+  background-color: black;
+  color: white;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  transform: translate(0em, 1em);
+  width: max-content;
+  z-index: 1;
+  content: 'create new';
+}
+.logoWrapper:active:after {
+  content: '';
+  padding: 0;
+}
