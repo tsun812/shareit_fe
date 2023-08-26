@@ -1,13 +1,19 @@
-*, *::before, *::after{
-    box-sizing: border-box;
-  }
-  
-  .container{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  .docContainer {
-    display: flex;
-    justify-content: center;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.header {
+  display: flex;
+  align-items: center;
+}
+.docContainer {
+  display: flex;
+  justify-content: center;
+}

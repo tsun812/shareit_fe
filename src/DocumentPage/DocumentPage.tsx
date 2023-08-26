@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TextEditor from '../Editor/TextEditor'
 import Preview from '../Preview/Preview'
 import DocumentNew from '../DocumentNew/DocumentNew'
-import { useState } from 'react'
+import ShareLink from './ShareLink/ShareLink'
+
 import './DocumentPage.css'
 const DocumentPage = () => {
   const [currentText, setCurrentText] = useState<string>('')
   return (
     <div className='container'>
-      <DocumentNew />
+      <div className='header'>
+        <DocumentNew />
+        <ShareLink />
+      </div>
       <div className='docContainer'>
         <TextEditor setCurrentText={setCurrentText} />
         <Preview currentText={currentText} />
