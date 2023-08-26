@@ -3,26 +3,27 @@ import { useRef, useState, useMemo, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import 'quill/dist/quill.snow.css'
 import './TextEditor.css'
-import ReactQuill from 'react-quill'
+import ReactQuill, { UnprivilegedEditor, Value } from 'react-quill'
+import {Sources, DeltaStatic} from 'quill'
 import { io, Socket } from 'socket.io-client'
 
 interface Props {
   setCurrentText: React.Dispatch<React.SetStateAction<string>>
 }
-
+type deltaType = DeltaStatic | undefined
 interface ServerToClientEvents {
-  'receive-changes': (delta: any) => void,
-  'load-document': (delta: any) => void
+  'receive-changes': (delta: DeltaStatic) => void,
+  'load-document': (delta: DeltaStatic) => void
 }
 
 interface ClientToServerEvents {
-  'send-changes': any,
-  'get-document': any,
-  'save-changes': any,
+  'send-changes': (delta: Value) => void,
+  'get-document': (id: string) => void,
+  'save-changes': (delta: deltaType) => void,
 }
 
 const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
-  const [value, setValue] = useState<any>('')
+  const [value, setValue] = useState<Value>()
   const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
   const {id: documentId} = useParams<string>()
   const container = useRef<ReactQuill>(null)
@@ -43,7 +44,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   useEffect(() => {
     if(socket == null || documentId == null) return
   
-    socket.once('load-document', (document: any) => {
+    socket.once('load-document', (document: DeltaStatic) => {
       const currentEditor = container.current?.getEditor()
       if(currentEditor){
         currentEditor?.updateContents(document)
@@ -58,7 +59,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
 
   useEffect(() => {
     if (socket == null) return
-    const updateHandler = (delta: any) => {
+    const updateHandler = (delta: DeltaStatic) => {
       const currentEditor = container.current?.getEditor()
       if(currentEditor){
         currentEditor.updateContents(delta)
@@ -87,10 +88,10 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
 
   const handleValueChange = (
     value: string,
-    delta: any,
-    source: any,
-    editor: ReactQuill.UnprivilegedEditor
-  ) => {
+    delta: Value,
+    source: Sources,
+    editor: UnprivilegedEditor
+  ): void => {
     if (source !== 'user'  || socket == null) return
     socket.emit('send-changes', delta)
     setCurrentText(editor.getText())
@@ -106,7 +107,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
   ]
   // custom handlers to generate markdown syntax on click
   const CUSTOM_HANDLERS = {
-    header: (input: string) => {
+    header: (input: string): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -159,7 +160,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    italic: (input: boolean) => {
+    italic: (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -175,7 +176,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    strike: (input: boolean) => {
+    strike: (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -191,7 +192,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    blockquote: (input: boolean) => {
+    blockquote: (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -206,7 +207,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    'code-block': (input: boolean) => {
+    'code-block': (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -222,7 +223,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    link: (input: boolean) => {
+    link: (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -238,7 +239,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    image: (input: boolean) => {
+    image: (input: boolean): void => {
       const currentEditor = container.current?.getEditor()
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
@@ -254,7 +255,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       }
 
     },
-    list: (input: string) => {
+    list: (input: string): void => {
       const currentEditor = container.current?.getEditor()
       let currentIndex = currentEditor?.getSelection(true)
       if (currentIndex) {
@@ -284,7 +285,7 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const formats = [
+  const formats: string[] = [
     'background',
     'bold',
     'color',
@@ -316,9 +317,9 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       formats={formats}
       onChange={(
         value: string,
-        delta: any,
-        source: any,
-        editor: ReactQuill.UnprivilegedEditor
+        delta: Value,
+        source: Sources,
+        editor: UnprivilegedEditor
       ) => handleValueChange(value, delta, source, editor)}
     />
   )

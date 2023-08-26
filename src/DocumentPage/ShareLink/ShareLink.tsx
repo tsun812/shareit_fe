@@ -3,7 +3,7 @@ import './ShareLink.css'
 
 const ShareLink = () => {
   const [copied, setCopied] = useState<boolean>(false)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     navigator.clipboard.writeText(window.location.href)
     let currentTarget = event.target as HTMLElement
     currentTarget.style.backgroundColor = '#40f1dc'
