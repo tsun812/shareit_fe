@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 interface Props {
     currentText: string
 }
+
 const Preview: React.FC<Props> = ({currentText}) => {
   return (
     <div>
@@ -16,7 +17,7 @@ const Preview: React.FC<Props> = ({currentText}) => {
         <VerticalDots className='icon' />
       </button>
     </div>
-      <ReactMarkdown className='previewContainer' remarkPlugins={[remarkGfm]}>{currentText}</ReactMarkdown>
+      <ReactMarkdown className='previewContainer' linkTarget='_blank' remarkPlugins={[remarkGfm]}>{currentText}</ReactMarkdown>
     </div>
   )
 }

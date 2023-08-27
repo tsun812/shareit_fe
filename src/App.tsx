@@ -1,5 +1,4 @@
 import React from 'react'
-import './App.css'
 import DocumentPage from './DocumentPage/DocumentPage'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { v4 as uuidV4 } from 'uuid'
