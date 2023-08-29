@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import './Preview.css'
-import {ReactComponent as VerticalDots } from '../icons/verticalDots.svg'
 import remarkGfm from 'remark-gfm'
 
 interface Props {
@@ -13,9 +12,6 @@ const Preview: React.FC<Props> = ({currentText}) => {
     <div>
     <div className='previewHeader'>
       <span className='previewText'>Preview</span>
-      <button className='iconContainer'>
-        <VerticalDots className='icon' />
-      </button>
     </div>
       <ReactMarkdown className='previewContainer' linkTarget='_blank' remarkPlugins={[remarkGfm]}>{currentText}</ReactMarkdown>
     </div>
