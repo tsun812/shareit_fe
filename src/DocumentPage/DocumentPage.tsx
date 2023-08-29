@@ -3,6 +3,7 @@ import TextEditor from '../Editor/TextEditor'
 import Preview from '../Preview/Preview'
 import DocumentNew from '../DocumentNew/DocumentNew'
 import ShareLink from './ShareLink/ShareLink'
+import DashboardLink from './DashboardLink/DashboardLink'
 
 import './DocumentPage.css'
 const DocumentPage = () => {
@@ -10,6 +11,7 @@ const DocumentPage = () => {
   return (
     <div className='container'>
       <div className='header'>
+        <DashboardLink />
         <DocumentNew />
         <ShareLink />
       </div>

@@ -1,0 +1,49 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.documentList {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    height: 100%;
+}
+
+.buttons-wrapper {
+  position: relative;
+  height: 8em;
+}
+
+.seemingly-outer-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 8em;
+  width: 16em;
+  background: rgb(63, 175, 173);
+  color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+}
+
+.seemingly-inner-button {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  height: 3em;
+  width: 4em;
+  margin: 0 3em;
+  color: #fff;
+  background: rgb(63, 175, 173);
+  font-size: 22px;
+  text-align: center;
+  outline: none;
+  border: none;
+}
+
+.seemingly-inner-button:focus {
+  border-bottom: 1px solid #fff;
+}

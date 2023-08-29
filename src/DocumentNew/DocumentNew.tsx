@@ -4,7 +4,7 @@ import './DocumentNew.css'
 
 const DocumentNew: React.FC = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    Object.assign(document.createElement('a'), { target: '_blank', href: '/', rel:'noopener noreferrer'}).click();
+    Object.assign(document.createElement('a'), {  href: '/', rel:'noreferrer' }).click();
   }
   return (
     <button onClick={(event) => handleClick(event)} className='logoWrapper'>

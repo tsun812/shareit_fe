@@ -3,42 +3,42 @@
 *::after {
   box-sizing: border-box;
 }
-.logo {
+.dashboardLogo {
   background-color: #fff;
   fill: rgb(63, 175, 173);
   padding: 0;
   margin: 0;
-  width: 3em;
+  width: 2.5em;
   height: 3em;
   cursor: pointer;
 }
 
-.logo:active {
+.dashboardLogo:active {
   fill: #80f1dc;
 }
 
-.logoWrapper {
+.dashboardLogoWrapper {
   border: none;
   background-color: #fff;
   padding: 0;
-  width: 3em;
+  width: 2.5em;
   height: 3em;
-  margin-left: .5em;
+  margin-left: 2em;
   margin-top: 1em;
 }
 
-.logoWrapper:hover:after {
+.dashboardLogoWrapper:hover:after {
   position: absolute;
   background-color: black;
   color: white;
   padding: 0.5em;
   border-radius: 0.5em;
-  transform: translate(0em, 1em);
+  transform: translate(.5em, 1.5em);
   width: max-content;
   z-index: 1;
-  content: 'create new';
+  content: 'dashboard';
 }
-.logoWrapper:active:after {
+.dashboardLogoWrapper:active:after {
   content: '';
   padding: 0;
 }

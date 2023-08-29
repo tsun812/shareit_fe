@@ -35,11 +35,16 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     setSocket(s)
     const currentEditor = container.current?.getEditor()
     currentEditor?.disable()
-
+    let documentList = JSON.parse(localStorage.getItem('documentList') || '[]')
+    const idExist = documentList.some((element: any) => element.id === documentId)
+    if(!idExist){
+      documentList?.push({id: documentId, name: 'untitled', createdAt: Date.now()})
+    }
+    localStorage.setItem('documentList', JSON.stringify(documentList))
     return () => {
       s.disconnect()
     }
-  }, [])
+  }, [documentId])
 
   useEffect(() => {
     if(socket == null || documentId == null) return
