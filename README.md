@@ -13,7 +13,8 @@ stacks: react-quill, socket.io-client, typescript
 
 [demo link](https://www.loom.com/share/32391b928d4f4a6f8b2ad50cda2512d7?sid=b6b1e5b0-b727-4e69-bc9a-4c3aae19b796)
 
-![share_it](https://github.com/tsun812/shareit_fe/assets/52032119/422ffa33-bf1d-4f05-91d6-d08bac547b51)
+![share_it](https://github.com/tsun812/shareit_fe/assets/52032119/97241d49-c826-4892-bd77-c668de4d9a85)
+
 
 
 ## Set up
