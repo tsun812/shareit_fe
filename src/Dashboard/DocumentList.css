@@ -31,11 +31,12 @@
 
 .seemingly-inner-button {
   position: absolute;
-  top: 8px;
+  top: 15px;
+  left: 2.8em;
   bottom: 8px;
   height: 3em;
   width: 4em;
-  margin: 0 3em;
+  margin: 0 auto;
   color: #fff;
   background: rgb(63, 175, 173);
   font-size: 22px;
