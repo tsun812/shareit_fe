@@ -117,33 +117,22 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        switch (input) {
-          case '1':
-            currentEditor?.insertText(startIndex, '# ', 'user')
-            break
-          case '2':
-            currentEditor?.insertText(startIndex, '## ', 'user')
-            break
-          case '3':
-            currentEditor?.insertText(startIndex, '### ', 'user')
-            break
-          case '4':
-            currentEditor?.insertText(startIndex, '#### ', 'user')
-            break
-          case '5':
-            currentEditor?.insertText(startIndex, '##### ', 'user')
-            break
-          case '6':
-            currentEditor?.insertText(startIndex, '###### ', 'user')
-            break
+      const base = '#'
+      const template = base.repeat(parseInt(input)) + ' '
+      const templateLength = parseInt(input) + 1
+      // insert or delete existing template if there is text selection, or insert at current cursor if no text is selected
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+        if(currentEditor.getText(startIndex, templateLength) === template){
+            currentEditor.deleteText(startIndex, templateLength, 'user')
         }
-        currentEditor?.setSelection(
-          startIndex + textLength + parseInt(input) + 1,
-          0
-        )
+        else{
+          currentEditor?.insertText(startIndex, template, 'user')
+          // update cursor
+          currentEditor?.setSelection(startIndex + templateLength + textLength, 0)
+        }
       }
 
+      // update preview
       if(currentEditor?.getText()){
         setCurrentText(currentEditor?.getText())
       }
@@ -154,12 +143,21 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        currentEditor?.insertText(startIndex, '**', 'user')
-        currentEditor?.insertText(startIndex + textLength + 2, '**', 'user')
-        currentEditor?.setSelection(startIndex + textLength + 2, 0)
+      const template = '**'
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+        // insert or delete existing template if there is text selection, or insert at current cursor if no text is selected
+        if(currentEditor.getText(startIndex, template.length) === template && currentEditor.getText(startIndex + textLength - 2, template.length) === template){
+          currentEditor.deleteText(startIndex, template.length, 'user')
+          currentEditor.deleteText(startIndex + textLength - 4, template.length, 'user')
+        }
+        else {
+          currentEditor?.insertText(startIndex, template, 'user')
+          currentEditor?.insertText(startIndex + textLength + 2, template, 'user')
+          currentEditor?.setSelection(startIndex + textLength + 2, 0)
+        }
       }
 
+      // update preview
       if(currentEditor?.getText()){
         setCurrentText(currentEditor?.getText())
       }
@@ -170,10 +168,18 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        currentEditor?.insertText(startIndex, '*', 'user')
-        currentEditor?.insertText(startIndex + textLength + 1, '*', 'user')
-        currentEditor?.setSelection(startIndex + textLength + 1, 0)
+      const template = '*'
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+
+        if(currentEditor.getText(startIndex, template.length) === template && currentEditor.getText(startIndex + textLength - 1, template.length) === template){
+          currentEditor.deleteText(startIndex, template.length, 'user')
+          currentEditor.deleteText(startIndex + textLength - 2, template.length, 'user')
+        }
+        else {
+          currentEditor?.insertText(startIndex, '*', 'user')
+          currentEditor?.insertText(startIndex + textLength + 1, '*', 'user')
+          currentEditor?.setSelection(startIndex + textLength + 1, 0)
+        }
       }
 
       if(currentEditor?.getText()){
@@ -186,10 +192,18 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        currentEditor?.insertText(startIndex, '~~', 'user')
-        currentEditor?.insertText(startIndex + textLength + 2, '~~', 'user')
-        currentEditor?.setSelection(startIndex + textLength + 2, 0)
+      const template = '~~'
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+
+        if(currentEditor.getText(startIndex, template.length) === template && currentEditor.getText(startIndex + textLength - 2, template.length) === template){
+          currentEditor.deleteText(startIndex, template.length, 'user')
+          currentEditor.deleteText(startIndex + textLength - 4, template.length, 'user')
+        }
+        else {
+          currentEditor?.insertText(startIndex, '~~', 'user')
+          currentEditor?.insertText(startIndex + textLength + 2, '~~', 'user')
+          currentEditor?.setSelection(startIndex + textLength + 2, 0)
+        }
       }
 
       if(currentEditor?.getText()){
@@ -202,9 +216,15 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        currentEditor?.insertText(startIndex, '> ', 'user')
-        currentEditor?.setSelection(startIndex + textLength + 2, 0)
+      const template = '> '
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+        if(currentEditor.getText(startIndex, template.length) === template){
+          currentEditor.deleteText(startIndex, template.length, 'user')
+        }
+        else {
+          currentEditor?.insertText(startIndex, '> ', 'user')
+          currentEditor?.setSelection(startIndex + textLength + 2, 0)
+        }
       }
 
       if(currentEditor?.getText()){
@@ -217,10 +237,17 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
       const currentSelection = currentEditor?.getSelection(true)
       const startIndex = currentSelection?.index
       const textLength = currentSelection?.length
-      if (startIndex !== undefined && textLength !== undefined) {
-        currentEditor?.insertText(startIndex, '```\n', 'user')
-        currentEditor?.insertText(startIndex + textLength + 4, '\n```', 'user')
-        currentEditor?.setSelection(startIndex + textLength + 4, 0)
+
+      if (startIndex !== undefined && textLength !== undefined && currentEditor) {
+        if(currentEditor.getText(startIndex, 3) === '```' && currentEditor.getText(startIndex + textLength - 3, 3) === '```'){
+          currentEditor.deleteText(startIndex, 3, 'user')
+          currentEditor.deleteText(startIndex + textLength - 6, 3, 'user')
+        }
+        else {
+          currentEditor?.insertText(startIndex, '```\n', 'user')
+          currentEditor?.insertText(startIndex + textLength + 4, '\n```', 'user')
+          currentEditor?.setSelection(startIndex + textLength + 4, 0)
+        }
       }
 
       if(currentEditor?.getText()){
