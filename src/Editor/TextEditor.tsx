@@ -1,29 +1,27 @@
 import React from 'react'
 import { useRef, useState, useMemo, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import 'quill/dist/quill.snow.css'
-import './TextEditor.css'
-import ReactQuill, { UnprivilegedEditor, Value } from 'react-quill'
+import ReactQuill, { UnprivilegedEditor } from 'react-quill'
 import {Sources, DeltaStatic} from 'quill'
 import { io, Socket } from 'socket.io-client'
+import 'quill/dist/quill.snow.css'
+import './TextEditor.css'
 
 interface Props {
   setCurrentText: React.Dispatch<React.SetStateAction<string>>
 }
-type deltaType = DeltaStatic | undefined
 interface ServerToClientEvents {
   'receive-changes': (delta: DeltaStatic) => void,
   'load-document': (delta: DeltaStatic) => void
 }
 
 interface ClientToServerEvents {
-  'send-changes': (delta: Value) => void,
+  'send-changes': (delta: DeltaStatic) => void,
   'get-document': (id: string) => void,
-  'save-changes': (delta: deltaType) => void,
+  'save-changes': (delta: DeltaStatic) => void,
 }
 
 const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
-  const [value, setValue] = useState<Value>()
   const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents>>()
   const {id: documentId} = useParams<string>()
   const container = useRef<ReactQuill>(null)
@@ -44,7 +42,8 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     return () => {
       s.disconnect()
     }
-  }, [documentId])
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     if(socket == null || documentId == null) return
@@ -52,15 +51,15 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     socket.once('load-document', (document: DeltaStatic) => {
       const currentEditor = container.current?.getEditor()
       if(currentEditor){
-        currentEditor?.updateContents(document)
-        currentEditor?.enable()
-        setCurrentText(currentEditor?.getText())
+        currentEditor.updateContents(document)
+        currentEditor.enable()
+        setCurrentText(currentEditor.getText())
       }
     })
 
     socket.emit('get-document', documentId)
-    
-  }, [socket, documentId, setCurrentText])
+    // eslint-disable-next-line
+  }, [socket])
 
   useEffect(() => {
     if (socket == null) return
@@ -77,31 +76,19 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     return () => {
       socket.off('receive-changes', updateHandler)
     }
+    // eslint-disable-next-line
   }, [socket, setCurrentText])
-
-  useEffect(() => {
-    if (socket == null) return
-    const SAVE_INTERVAL = 2000
-    const currentEditor = container.current?.getEditor()
-    const saveDocument = setInterval(() => {
-      socket.emit('save-changes', currentEditor?.getContents())
-    }, SAVE_INTERVAL)
-    return () => {
-     clearInterval(saveDocument)
-    }
-  }, [socket])
 
   const handleValueChange = (
     value: string,
-    delta: Value,
+    delta: DeltaStatic,
     source: Sources,
     editor: UnprivilegedEditor
   ): void => {
     if (source !== 'user'  || socket == null) return
     socket.emit('send-changes', delta)
+    socket.emit('save-changes', editor.getContents())
     setCurrentText(editor.getText())
-    setValue(delta)
-
   }
 
   const TOOLBAR_OPTIONS = [
@@ -289,14 +276,15 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     },
     list: (input: string): void => {
       const currentEditor = container.current?.getEditor()
-      let currentIndex = currentEditor?.getSelection(true)
-      if (currentIndex) {
+      let currentSelection = currentEditor?.getSelection(true)
+      if (currentSelection) {
         if (input === 'ordered') {
-          currentEditor?.insertText(currentIndex?.index, '* ', 'user')
+          currentEditor?.insertText(currentSelection.index, '* ', 'user')
+          currentEditor?.setSelection(currentSelection.index + 2, 0)
         } else if (input === 'bullet') {
-          currentEditor?.insertText(currentIndex?.index, '1. ', 'user')
+          currentEditor?.insertText(currentSelection.index, '1. ', 'user')
+          currentEditor?.setSelection(currentSelection.index + 3, 0)
         }
-        currentEditor?.setSelection(currentIndex?.index + 3, 0)
       }
 
       if(currentEditor?.getText()){
@@ -344,12 +332,12 @@ const TextEditor: React.FC<Props> = ({ setCurrentText }) => {
     <ReactQuill
       theme='snow'
       ref={container}
-      defaultValue={value}
+      defaultValue=''
       modules={modules}
       formats={formats}
       onChange={(
         value: string,
-        delta: Value,
+        delta: DeltaStatic,
         source: Sources,
         editor: UnprivilegedEditor
       ) => handleValueChange(value, delta, source, editor)}
